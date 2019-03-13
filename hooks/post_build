@@ -1,2 +1,6 @@
 #!/bin/bash
-docker run --rm $IMAGE_NAME ls -l /
+docker run --rm $IMAGE_NAME ls -l / > listing
+git add .
+git commit -m 'add listing'
+git log
+git push -u origin master
