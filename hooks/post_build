@@ -1,0 +1,4 @@
+#!/bin/bash
+env
+echo "$IMAGE_NAME"
+docker run -it --rm $IMAGE_NAME ls -l /
