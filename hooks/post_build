@@ -1,6 +1,15 @@
 #!/bin/bash
 docker run --rm $IMAGE_NAME ls -l / > listing
-git add .
-git commit -m 'add listing'
-git log
-git push -u origin master
+
+ls -l
+pwd
+
+eval $(ssh-agent -s)
+ssh-add <(echo "$DEPLOY_KEY")
+ssh-add -l
+ssh-agent -k
+
+#git add .
+#git commit -m 'add listing'
+#git log
+#git push -u origin master
