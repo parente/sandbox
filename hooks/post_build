@@ -21,7 +21,7 @@ git clone "$GIT_URI"
 popd
 
 echo "INFO: creating $MANIFEST_FILE"
-mkdir -p $(basename "$MANIFEST_FILE")
+mkdir -p $(dirname "$MANIFEST_FILE")
 source hooks/manifest.tmpl
 
 echo "INFO: pushing to $GIT_URI"
