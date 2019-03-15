@@ -1,44 +1,33 @@
 #!/bin/bash
 set -e
 
+env
+
+GIT_URI="git@github.com:parente/sandbox.wiki.git"
 GIT_SHA_TAG=${SOURCE_COMMIT:0:12}
-MANIFEST="$(basename ${DOCKER_REPO})/${SOURCE_COMMIT:0:12}.md"
+MANIFEST_FILE="manifests/${DOCKER_REPO}}-${SOURCE_COMMIT:0:12}.md"
 
-docker run --rm $IMAGE_NAME apt list --installed > apt.manifest
-echo "DEBUG: executing ls"
-ls -l
-echo "DEBUG: executing cat"
-cat apt.manifest
-
-echo "DEBUG: starting agent"
+echo "INFO: configuring git agent"
 eval $(ssh-agent -s)
 ssh-add <(echo "$DEPLOY_KEY")
-echo "DEBUG: inspecting keys"
 ssh-add -l
-echo "DEBUG: configuring git"
 git config --global user.email "jupyter@googlegroups.com"
 git config --global user.name "Jupyter Docker Stacks"
 
-echo "DEBUG: cloning wiki"
-git clone git@github.com:parente/sandbox.wiki.git
-pushd sandbox.wiki
+echo "INFO: cloning $GIT_URI"
+git clone "$GIT_URI"
+pushd $(basename "$GIT_URI")
 
-echo "DEBUG: making $(dirname $MANIFEST)"
-mkdir -p $(dirname "$MANIFEST")
-echo "DEBUG: populating $MANIFEST"
-echo "# Manifest for ${GIT_SHA_TAG}" > "$MANIFEST"
-echo "## Apt" >> "$MANIFEST"
-echo '```' >> "$MANIFEST"
-cat ../apt.manifest >> "$MANIFEST"
-echo '```' >> "$MANIFEST"
+echo "INFO: creating $MANIFEST_FILE"
+mkdir -p manifests
+source manifest.tmpl
 
-echo "DEBUG: pushing to github"
+echo "INFO: pushing to $GIT_URI"
 git add .
-git commit -m "Add ${MANIFEST}"
+git commit -m "DOC: Build ${MANIFEST_FILE}"
 git push -u origin master
 
 popd
-echo "DEBUG: terminating agent"
 ssh-agent -k
 
-echo "DEBUG: done"
+echo "INFO: done"

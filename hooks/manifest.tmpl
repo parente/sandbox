@@ -1,0 +1,31 @@
+cat << EOF > "$MANIFEST_FILE"
+* Build datetime: $(date)
+* Image: ${DOCKER_REPO}:${GIT_SHA_TAG}
+* Git SHA: [${SOURCE_COMMIT}](https://github.com/parente/sandbox/commit/${SOURCE_COMMIT})
+
+> ${COMMIT_MSG}
+
+## Python Packages
+
+\`\`\`
+TODO
+\`\`\`
+
+## Julia Packages
+
+\`\`\`
+TODO
+\`\`\`
+
+## R Packages
+
+\`\`\`
+TODO
+\`\`\`
+
+## Apt Packages
+
+\`\`\`
+$(docker run --rm ${IMAGE_NAME} apt list --installed)
+\`\`\`
+EOF
