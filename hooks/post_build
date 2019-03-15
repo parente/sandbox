@@ -1,12 +1,14 @@
 #!/bin/bash
 set -e
 
+WORKDIR=$(mktemp -d)
 GIT_URI="git@github.com:parente/sandbox.wiki.git"
-GIT_SANDBOX="sandbox.wiki"
+GIT_SANDBOX="${WORKDIR}/sandbox.wiki"
 GIT_SHA_TAG=${SOURCE_COMMIT:0:12}
-MANIFEST_FILE="manifests/${DOCKER_REPO}}-${SOURCE_COMMIT:0:12}.md"
+IMAGE_SHORT_NAME=$(basename $DOCKER_REPO)
+MANIFEST_FILE="${GIT_SANDBOX}/manifests/${IMAGE_SHORT_NAME}-${SOURCE_COMMIT:0:12}.md"
 
-echo "INFO: configuring git agent"
+echo "INFO: configuring git"
 eval $(ssh-agent -s)
 ssh-add <(echo "$DEPLOY_KEY")
 ssh-add -l
@@ -14,19 +16,20 @@ git config --global user.email "jupyter@googlegroups.com"
 git config --global user.name "Jupyter Docker Stacks"
 
 echo "INFO: cloning $GIT_URI"
+pushd "$WORKDIR"
 git clone "$GIT_URI"
-pushd "$GIT_SANDBOX"
+popd
 
 echo "INFO: creating $MANIFEST_FILE"
-mkdir -p manifests
+mkdir -p $(basename "$MANIFEST_FILE")
 source manifest.tmpl
 
 echo "INFO: pushing to $GIT_URI"
+pushd "$GIT_SANDBOX"
 git add .
 git commit -m "DOC: Build ${MANIFEST_FILE}"
 git push -u origin master
-
 popd
-ssh-agent -k
 
+ssh-agent -k
 echo "INFO: done"

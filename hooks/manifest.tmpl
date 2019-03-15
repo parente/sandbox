@@ -1,8 +1,9 @@
 cat << EOF > "$MANIFEST_FILE"
 * Build datetime: $(date)
-* Build code: ${BUILD_CODE}
-* Image: ${DOCKER_REPO}:${GIT_SHA_TAG}
-* Git SHA: [${SOURCE_COMMIT}](https://github.com/parente/sandbox/commit/${SOURCE_COMMIT})
+* DockerHub build code: ${BUILD_CODE}
+* Docker image: ${DOCKER_REPO}:${GIT_SHA_TAG}
+* Git commit SHA: [${SOURCE_COMMIT}](https://github.com/parente/sandbox/commit/${SOURCE_COMMIT})
+* Git commit message:
 
 > ${COMMIT_MSG}
 
