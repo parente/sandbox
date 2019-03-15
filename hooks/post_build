@@ -1,9 +1,8 @@
 #!/bin/bash
 set -e
 
-env
-
 GIT_URI="git@github.com:parente/sandbox.wiki.git"
+GIT_SANDBOX="sandbox.wiki"
 GIT_SHA_TAG=${SOURCE_COMMIT:0:12}
 MANIFEST_FILE="manifests/${DOCKER_REPO}}-${SOURCE_COMMIT:0:12}.md"
 
@@ -16,7 +15,7 @@ git config --global user.name "Jupyter Docker Stacks"
 
 echo "INFO: cloning $GIT_URI"
 git clone "$GIT_URI"
-pushd $(basename "$GIT_URI")
+pushd "$GIT_SANDBOX"
 
 echo "INFO: creating $MANIFEST_FILE"
 mkdir -p manifests

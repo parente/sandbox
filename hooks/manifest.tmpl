@@ -1,5 +1,6 @@
 cat << EOF > "$MANIFEST_FILE"
 * Build datetime: $(date)
+* Build code: ${BUILD_CODE}
 * Image: ${DOCKER_REPO}:${GIT_SHA_TAG}
 * Git SHA: [${SOURCE_COMMIT}](https://github.com/parente/sandbox/commit/${SOURCE_COMMIT})
 
