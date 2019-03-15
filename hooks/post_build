@@ -1,13 +1,17 @@
 #!/bin/bash
 
 GIT_SHA_TAG=${SOURCE_COMMIT:0:12}
-MANIFEST="${DOCKER_REPO}/${SOURCE_COMMIT:0:12}.md"
+MANIFEST="$(basename ${DOCKER_REPO})/${SOURCE_COMMIT:0:12}.md"
 
 docker run --rm $IMAGE_NAME apt list --installed > apt.manifest
 
 eval $(ssh-agent -s)
 ssh-add <(echo "$DEPLOY_KEY")
 ssh-add -l
+git config --global user.email "jupyter@googlegroups.com"
+git config --global user.name "Jupyter Docker Stacks"
+
+pushd /tmp
 
 git clone git@github.com:parente/sandbox.wiki.git
 
@@ -24,6 +28,7 @@ git add .
 git commit -m "Add manifest for ${GIT_SHA_TAG}"
 git push -u origin master
 
+popd
 popd
 
 ssh-agent -k
