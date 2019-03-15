@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+# DEBUG
+echo "DEBUG: show paths"
+pwd
+ls -l
+ls -l ../
+
+echo "INFO: populating variables"
 WORKDIR=$(mktemp -d)
 GIT_URI="git@github.com:parente/sandbox.wiki.git"
 GIT_SANDBOX="${WORKDIR}/sandbox.wiki"
