@@ -1,15 +1,29 @@
 #!/bin/bash
-docker run --rm $IMAGE_NAME ls -l / > listing
 
-ls -l
-pwd
+GIT_SHA_TAG=${SOURCE_COMMIT:0:12}
+MANIFEST="${DOCKER_REPO}/${SOURCE_COMMIT:0:12}.md"
+
+docker run --rm $IMAGE_NAME apt list --installed > apt.manifest
 
 eval $(ssh-agent -s)
 ssh-add <(echo "$DEPLOY_KEY")
 ssh-add -l
-ssh-agent -k
 
-#git add .
-#git commit -m 'add listing'
-#git log
-#git push -u origin master
+git clone git@github.com:parente/sandbox.wiki.git
+
+pushd sandbox.wiki
+
+mkdir -p $(dirname "$MANIFEST")
+echo "# Manifest for ${GIT_SHA_TAG}" > "$MANIFEST"
+echo "## Apt" >> "$MANIFEST"
+echo "```" >> "$MANIFEST"
+cat apt.manifest >> "$MANIFEST"
+echo "```" >> "$MANIFEST"
+
+git add .
+git commit -m "Add manifest for ${GIT_SHA_TAG}"
+git push -u origin master
+
+popd
+
+ssh-agent -k
