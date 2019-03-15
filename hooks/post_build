@@ -22,7 +22,7 @@ popd
 
 echo "INFO: creating $MANIFEST_FILE"
 mkdir -p $(basename "$MANIFEST_FILE")
-source manifest.tmpl
+source hooks/manifest.tmpl
 
 echo "INFO: pushing to $GIT_URI"
 pushd "$GIT_SANDBOX"
