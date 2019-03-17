@@ -2,12 +2,14 @@
 set -e
 
 echo "INFO: populating variables"
+BUILD_TIMESTAMP=$(date -u +%FT%TZ)
 WORKDIR=$(mktemp -d)
 GIT_URI="git@github.com:parente/sandbox.wiki.git"
 GIT_SANDBOX="${WORKDIR}/sandbox.wiki"
 GIT_SHA_TAG=${SOURCE_COMMIT:0:12}
 IMAGE_SHORT_NAME=$(basename $DOCKER_REPO)
 MANIFEST_FILE="${GIT_SANDBOX}/manifests/${IMAGE_SHORT_NAME}-${SOURCE_COMMIT:0:12}.md"
+INDEX_FILE="${GIT_SANDBOX}/Home.md"
 
 echo "INFO: configuring git"
 eval $(ssh-agent -s)
@@ -24,6 +26,7 @@ popd
 echo "INFO: creating $MANIFEST_FILE"
 mkdir -p $(dirname "$MANIFEST_FILE")
 source hooks/manifest.tmpl
+source hooks/index.tmpl
 
 echo "INFO: pushing to $GIT_URI"
 pushd "$GIT_SANDBOX"
