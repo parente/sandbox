@@ -12,7 +12,7 @@ jobs:
           ref: production
       - name: Reset promotion branch
         run: |
-          git fetch origin master:master production
+          git fetch origin master:master
           git reset --hard master
       - name: Format pull request details
         id: git_log
