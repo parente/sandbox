@@ -18,10 +18,16 @@ jobs:
       - name: Format pull request details
         id: git_log
         run: |
-          echo "version"
-          git --version
-          echo "diff"
-          git log --merges origin/production..origin/master
+          description=$(git log --merges --format='%s %b' origin/production..origin/master | cut -d ' ' -f4,7- | sed -e 's/^/* /')
+          echo $description
+          description="${description//'%'/'%25'}"
+          echo $description
+          description="${description//$'\n'/'%0A'}"
+          echo $description
+          description="${description//$'\r'/'%0D'}" 
+          echo ${description}
+          echo "::set-output name=date::$(date "+%Y-%m-%d")"
+          echo "::set-output name=description::${description}"
       - name: Create pull request
         uses: peter-evans/create-pull-request@v2
         with:
