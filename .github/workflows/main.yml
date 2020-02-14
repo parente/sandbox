@@ -18,7 +18,7 @@ jobs:
       - name: Format pull request details
         id: git_log
         run: |
-          description=$(git log --merges --reverse --format='%cD: %s - %b' origin/production..origin/master | cut -d ' ' -f1-6,10,13- | sed -e 's/^/* /')
+          description=$(git log --merges --reverse --format='%cD: %s - %b (%an)' origin/production..origin/master | cut -d ' ' -f1-6,10,13- | sed -e 's/^/* /')
           description="${description//'%'/'%25'}"
           description="${description//$'\n'/'%0A'}"
           description="${description//$'\r'/'%0D'}" 
