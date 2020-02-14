@@ -12,18 +12,17 @@ jobs:
           ref: production
       - name: Reset promotion branch
         run: |
-          git fetch origin master:master
+          git fetch origin master production
           git reset --hard master
       - name: Format pull request details
         id: git_log
         run: |
-          log=$(git log --merges --format='%s %b' origin/production..origin/master)
-          echo $log
+          log=$(git log --merges --format='%s %b' origin/production..origin/master | cut -d ' ' -f4,7- | sed -e 's/^/* /')
           log="${log//'%'/'%25'}"
           log="${log//$'\n'/'%0A'}"
           log="${log//$'\r'/'%0D'}" 
           echo "::set-output name=date::$(date "+%Y-%m-%d")"
-          echo "::set-output name=log::$log"
+          echo "::set-output name=log::${log}"
       - name: Create pull request
         uses: peter-evans/create-pull-request@v2
         with:
