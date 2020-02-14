@@ -13,7 +13,6 @@ jobs:
       - name: Reset promotion branch
         run: |
           git fetch origin master production
-          git reset --hard master
       - name: Format pull request details
         id: git_log
         run: |
