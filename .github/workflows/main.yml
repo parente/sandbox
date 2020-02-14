@@ -14,17 +14,17 @@ jobs:
         run: |
           git fetch origin master:master
           git reset --hard master
-      - name: Compute git log
+      - name: Format pull request details
         id: git_log
         run: |
-          log=$(git log --merges --format='%s %b' origin/production..origin/master | cut -d ' ' -f 4,7- | sed -e 's/^/* /')
+          log=$(git log --merges --format='%s %b' origin/production..origin/master)
+          echo $log
           log="${log//'%'/'%25'}"
           log="${log//$'\n'/'%0A'}"
           log="${log//$'\r'/'%0D'}" 
-          echo "${log}"
           echo "::set-output name=date::$(date "+%Y-%m-%d")"
-          echo "::set-output name=log::${log}"
-      - name: Create Pull Request
+          echo "::set-output name=log::$log"
+      - name: Create pull request
         uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
