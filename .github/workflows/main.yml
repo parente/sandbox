@@ -21,8 +21,10 @@ jobs:
           description="${description//'%'/'%25'}"
           description="${description//$'\n'/'%0A'}"
           description="${description//$'\r'/'%0D'}" 
+          echo ${description}
+          echo "${description}"
           echo "::set-output name=date::$(date "+%Y-%m-%d")"
-          echo "::set-output name=description::$description"
+          echo "::set-output name=description::${description}"
       - name: Create pull request
         uses: peter-evans/create-pull-request@v2
         with:
