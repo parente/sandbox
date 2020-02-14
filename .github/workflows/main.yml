@@ -12,12 +12,13 @@ jobs:
           ref: production
       - name: Reset promotion branch
         run: |
-          git fetch origin master:master production
-          git checkout --hard master
+          git fetch origin master:master production:production
+          git reset --hard master
       - name: Format pull request details
         id: git_log
         run: |
-          log=$(git log --merges --format='%s %b' origin/production..origin/master | cut -d ' ' -f4,7- | sed -e 's/^/* /')
+          log=$(git log --merges --format='%s %b' production..master | cut -d ' ' -f4,7- | sed -e 's/^/* /')
+          echo $log
           log="${log//'%'/'%25'}"
           log="${log//$'\n'/'%0A'}"
           log="${log//$'\r'/'%0D'}" 
