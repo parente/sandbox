@@ -12,7 +12,8 @@ jobs:
           ref: production
       - name: Reset promotion branch
         run: |
-          git fetch origin master production
+          git fetch origin master:master production
+          git checkout --hard master
       - name: Format pull request details
         id: git_log
         run: |
