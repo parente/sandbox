@@ -17,8 +17,14 @@ jobs:
       - name: Compute git log
         id: git_log
         run: |
+          log=$(git log --merges --format='%s %b' origin/production..origin/master | cut -d ' ' -f
+          4,7- | sed -e 's/^/* /')
+          log="${log//'%'/'%25'}"
+          log="${log//$'\n'/'%0A'}"
+          log="${log//$'\r'/'%0D'}" 
+          echo "${log}"
           echo "##[set-output name=date;]$(date "+%Y-%m-%d")"
-          echo "##[set-output name=log;]$(git log --merges --format='%s %b' origin/production..origin/master | cut -d ' ' -f 4,7- | sed -e 's/^/* /')"
+          echo "##[set-output name=log;]${log}"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
