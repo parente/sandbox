@@ -17,6 +17,8 @@ jobs:
       - name: Format pull request details
         id: git_log
         run: |
+          git log
+          git log --merges
           git log --merges --format='%s %b' production..master
           description=$(git log --merges --format='%s %b' origin/production..origin/master)
           echo $description
