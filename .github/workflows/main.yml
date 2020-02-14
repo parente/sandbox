@@ -17,7 +17,7 @@ jobs:
       - name: Format pull request details
         id: git_log
         run: |
-          description=$(git log --merges --format='%s %b' origin/production..origin/master))
+          description=$(git log --merges --format='%s %b' origin/production..origin/master)
           echo $description
           description=$(git log --merges --format='%s %b' origin/production..origin/master | cut -d ' ' -f4,7- | sed -e 's/^/* /')
           echo $description
