@@ -20,7 +20,7 @@ jobs:
           echo "version"
           git --version
           echo "diff"
-          git log -n 100 --merges origin/production..origin/master
+          git log -n 1000 origin/production..origin/master
       - name: Create pull request
         uses: peter-evans/create-pull-request@v2
         with:
