@@ -26,6 +26,6 @@ jobs:
           filter: |
             **/*.md
             **/*.png
-            **/*.jpg
+            **/*.jpe?g
           username: "${{ github.actor }}"
           email: ${{ github.actor }}@users.noreply.github.com
