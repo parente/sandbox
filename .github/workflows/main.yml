@@ -23,6 +23,9 @@ jobs:
           dst_repo_name: sandbox
           src_branch: master
           dst_branch: copycat
-          file_filter: "*.md,*.png"
+          filter: |
+            **/*.md
+            **/*.png
+            **/*.jpg
           username: "${{ github.actor }}"
           email: ${{ github.actor }}@users.noreply.github.com
