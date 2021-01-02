@@ -21,7 +21,7 @@ jobs:
           dst_path: /
           dst_owner: parente
           dst_repo_name: sandbox
-          src_branch: main
+          src_branch: master
           dst_branch: copycat
           file_filter: "*.md,*.png"
           username: "${{ github.actor }}"
