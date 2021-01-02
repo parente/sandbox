@@ -3,7 +3,7 @@ name: Test Copycat
 on:
   push:
     branches:
-      - main
+      - "*"
     paths:
       - "**/*.md"
       - "**/*.png"
